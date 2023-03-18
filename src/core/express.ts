@@ -20,6 +20,11 @@ app.use(cors());
 app.use(compression());
 app.use(morganMiddleware);
 app.use("/api", apiRoutes);
+
+app.get("/", (req, res) => {
+  res.send("YTDL");
+});
+
 app.use("*", notFoundHandler);
 app.use(errorHandler);
 
