@@ -39,6 +39,24 @@ class VideoController {
             }
         });
     }
+    static getInfoById(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.query.id;
+                if (!(0, validaton_1.validateId)(id))
+                    throw new server_errors_1.NotFound(constants_1.Constants.NotFound);
+                const url = ytdl_core_1.default.getVideoID(id);
+                let videoData = yield ytdl_core_1.default.getInfo(url);
+                if (videoData == null)
+                    throw new server_errors_1.NotFound(constants_1.Constants.NotFound);
+                const response = new video_details_1.VideoDetails(videoData);
+                res.status(200).json(response);
+            }
+            catch (error) {
+                next(new api_error_1.APIError(error === null || error === void 0 ? void 0 : error.message, error === null || error === void 0 ? void 0 : error.code));
+            }
+        });
+    }
     static getRelated(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

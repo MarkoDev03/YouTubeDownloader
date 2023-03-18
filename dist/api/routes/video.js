@@ -5,6 +5,8 @@ const video_controller_1 = require("../controllers/video.controller");
 const router = (0, express_1.Router)();
 router.route("/get-info")
     .get(video_controller_1.VideoController.getInfo);
+router.route("/get-info-by-id")
+    .get(video_controller_1.VideoController.getInfoById);
 router.route("/get-related")
     .get(video_controller_1.VideoController.getRelated);
 router.route("/download")
