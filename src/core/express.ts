@@ -8,7 +8,6 @@ import { morganMiddleware } from "../api/middleware/handlers/morgan";
 import apiRoutes from "../api/middleware/index";
 import { errorHandler } from "../api/middleware/handlers/error-handler";
 import { notFoundHandler } from "../api/middleware/handlers/not-found";
-import limiter from "./rate-limiter";
 
 const app: Express = express();
 
@@ -20,7 +19,6 @@ app.use(hsts());
 app.use(cors());
 app.use(compression());
 app.use(morganMiddleware);
-app.use(limiter);
 app.use("/api", apiRoutes);
 app.use("*", notFoundHandler);
 app.use(errorHandler);

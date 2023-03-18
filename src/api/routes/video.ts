@@ -6,6 +6,10 @@ const router = Router();
 router.route("/get-info")
       .get(VideoController.getInfo);
 
+router.route("/get-info-by-id")
+      .get(VideoController.getInfoById);
+
+
 router.route("/get-related")
       .get(VideoController.getRelated);
 

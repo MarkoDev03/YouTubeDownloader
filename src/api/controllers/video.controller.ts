@@ -4,7 +4,7 @@ import { APIError } from "../../errors/api-error";
 import { BadRequest, NotFound } from "../../errors/server-errors";
 import { Constants } from "../../common/constants";
 import { VideoDetails } from "../models/video-details";
-import { validateUrl } from "../../utils/validaton";
+import { validateId, validateUrl } from "../../utils/validaton";
 import { Formats, UserFormats } from "../../common/enums";
 import contentDisposition from "content-disposition";
 
@@ -15,6 +15,27 @@ export class VideoController {
 
       if (!validateUrl(url))
         throw new NotFound(Constants.NotFound);
+
+      let videoData: ytdl.videoInfo = await ytdl.getInfo(url);
+
+      if (videoData == null)
+        throw new NotFound(Constants.NotFound);
+
+      const response = new VideoDetails(videoData);
+      res.status(200).json(response);
+    } catch (error) {
+      next(new APIError(error?.message, error?.code));
+    }
+  }
+
+  public static async getInfoById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id: string = req.query.id as string;
+
+      if (!validateId(id))
+        throw new NotFound(Constants.NotFound);
+
+      const url = ytdl.getVideoID(id);
 
       let videoData: ytdl.videoInfo = await ytdl.getInfo(url);
 
@@ -62,7 +83,7 @@ export class VideoController {
       let videoData: ytdl.videoInfo = await ytdl.getInfo(url);
 
       if (videoData == null)
-         throw new NotFound(Constants.NotFound);
+        throw new NotFound(Constants.NotFound);
 
       const title = req.query.title ?? videoData.videoDetails.title;
 
