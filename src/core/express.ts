@@ -2,7 +2,6 @@ import express, { Express } from "express";
 import cors from "cors";
 import methodOverride from "method-override";
 import helmet from "helmet";
-import hsts from "hsts";
 import compression from "compression";
 import { morganMiddleware } from "../api/middleware/handlers/morgan";
 import apiRoutes from "../api/middleware/index";
@@ -15,16 +14,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride());
 app.use(helmet());
-app.use(hsts());
 app.use(cors());
 app.use(compression());
 app.use(morganMiddleware);
 app.use("/api", apiRoutes);
-
-app.get("/", (req, res) => {
-  res.send("YTDL");
-});
-
 app.use("*", notFoundHandler);
 app.use(errorHandler);
 
